@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Gantt Chart Creator</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="./css/font-awesome.min.css">
+		<link rel="stylesheet" href="./css/css">
+		<link rel="stylesheet" href="./css/unsemantic.css">
+		<link rel="stylesheet" href="./css/common.css">
+		<link rel="stylesheet" href="./css/demo.css">
+		<link rel="stylesheet" href="./css/vis.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+		<script src="./js/papaparse.js"></script>
+		<script src="./js/vis.js"></script>
+		<!-- <script src="http://visjs.org/dist/vis.js"></script> -->
+		<!-- <link href="http://visjs.org/dist/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" /> -->
+	</head>
+	<body>
+		<br>
+		<h1>Gantt Chart Creator</h1>
+
+		<div class="grid-container">
+
+			<!-- <div class="grid-15">
+				 <label><input type="checkbox" id="download"> Download</label>
+				<label><input type="checkbox" id="stream"> Stream</label>
+				<label><input type="checkbox" id="chunk"> Chunk</label>
+				<label><input type="checkbox" id="worker"> Worker thread</label>
+				<label><input type="checkbox" id="header" checked="TRUE"> Header row</label>
+				<label><input type="checkbox" id="skipEmptyLines" checked="TRUE"> Skip empty lines</label>
+				 <label><input type="checkbox" id="dynamicTyping"> Dynamic typing</label>
+				<label><input type="checkbox" id="fastmode"> Fast mode</label>
+
+				<label><input type="checkbox" id="step-pause"> Pause on step</label>
+				<label><input type="checkbox" id="print-steps"> Log each step/chunk</label>
+
+				<label>Delimiter: <input type="text" size="5" placeholder="auto" id="delimiter"> <a href="javascript:" id="insert-tab">tab</a></label>
+
+				 Line Endings:
+
+				<label style="display: inline;"><input type="radio" name="newline" id="newline-auto" checked>Auto</label>
+				<label style="display: inline;"><input type="radio" name="newline" id="newline-n">\n</label>
+				<label style="display: inline;"><input type="radio" name="newline" id="newline-r">\r</label>
+				<label style="display: inline;"><input type="radio" name="newline" id="newline-rn">\r\n</label>
+
+				<label>Preview: <input type="number" min="0" max="1000" placeholder="default" id="preview"></label>
+
+				<label>Encoding: <input type="text" id="encoding" placeholder="default" size="10"></label>
+
+				<label>Comment char: <input type="text" size="5" maxlength="1" placeholder="default" id="comments"></label>
+
+				<label>Papa.LocalChunkSize: <input type="number" min="0" placeholder="default" id="localChunkSize"></label>
+
+				<label>Papa.RemoteChunkSize: <input type="number" min="0" placeholder="default" id="remoteChunkSize"></label>
+			</div> -->
+
+			<div class="grid-65 text-center">
+
+TASKS: <textarea id="input" placeholder="Input">id,content,group,start,end,type,className
+1,Task 1,groupid1,2016-12-02,2017-03-17,point,redpoint
+2,Task 2,groupid1,2016-12-02,,box,green
+3,Task 3,groupid1,2016-12-02,2017-03-17,range,blue
+4,Task 4,groupid2,2016-12-02,2017-02-17,background,
+5,Task 5,groupid2,2017-03-17,2017-04-07,range,orange
+6,Task 6,groupid3,2017-03-17,2017-04-27,range,red
+7,Task 7,groupid3,2017-04-07,2017-04-27,box,orange
+8,Task 8,groupid3,2017-05-07,2017-05-17,box,green
+9,Task 9,groupid4,2017-06-07,2017-06-20,range,blue
+10,Task 10,groupid4,2017-07-07,2017-07-31,point,orange</textarea>
+</div>
+<div class="grid-35 text-center">
+
+GROUP: <textarea id="groupinput" placeholder="Input">id,content,style
+groupid1, Common, font-weight:bold
+groupid2, Section 1, font-weight:bold
+groupid3, Section 2, font-weight:bold
+groupid4, Section 3, font-weight:bold</textarea>
+</div>
+				<br>
+
+				<br><br>
+
+				<center>
+				<button id="submit-parse" class="green">Create Gantt</button>
+				&nbsp;
+				<button id="submit-clear" onClick="window.location.reload()">Clear</button>
+			  </center>
+
+				<br>
+				<div class="grid-35 text-center">
+				  Axis orientation:
+				  <select id="axis-orientation">
+				    <option value="both" selected>both</option>
+				    <option value="bottom">bottom</option>
+				    <option value="none">none</option>
+				    <option value="top">top</option>
+				  </select>
+				</div>
+
+				<div class="grid-35 text-center">
+				  Tasks orientation:
+				  <select id="item-orientation">
+				    <option value="bottom" selected>bottom</option>
+				    <option value="top">top</option>
+				  </select>
+				</div>
+
+				<div class="grid-30 text-center">
+					Axis Scale:
+					<select id="timeaxis-scale">
+						<option value="year" selected>Year</option>
+						<option value="month">Month</option>
+						<option value="day">Day</option>
+						<option value="weekday">Weekday</option>
+						<option value="hour">Hour</option>
+						<option value="minute">Minute</option>
+						<option value="second">Second</option>
+						<option value="millisecond">Millisecond</option>
+					</select>
+				</div>
+
+				<br>
+				<br><br>
+				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
+
+				<div id="visualization">
+
+				</div>
+				<br>
+
+				<div>
+				  Custom CSS:
+				  <textarea id="custom_css">.vis-item.redpoint {
+  border-color: darkred;
+}
+
+.vis-item.red {
+  color: white;
+  background-color: red;
+  border-color: darkred;
+}
+
+.vis-item.green {
+  color: white;
+  background-color: green;
+  border-color: darkgreen;
+}
+
+.vis-item.blue {
+  color: white;
+  background-color: blue;
+  border-color: darkblue;
+}
+
+.vis-item.orange {
+  color: white;
+  background-color: orange;
+  border-color: darkorange;
+}</textarea>
+				</div>
+				<br>
+				<br><br>
+				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
+
+				<div id="visualization">
+
+				</div>
+				<br>
+
+				<script>
+				//var btnLoad = document.getElementById('load');
+				$(function()
+				{
+					$('#submit-parse').click(function()
+					{
+						//var config = buildConfig();
+						var txt = $('#input').val();
+						var txt_grp = $('#groupinput').val();
+
+						/**
+						including style
+						**/
+						var style = document.createElement('style')
+						style.type = 'text/css'
+						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
+						style.innerHTML = $('#custom_css').val();
+						document.getElementsByTagName('head')[0].appendChild(style)
+
+						var results = Papa.parse(txt, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
+						var results_grp = Papa.parse(txt_grp, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
+		  			var items = new vis.DataSet();
+						var groups = new vis.DataSet();
+		  				// create a timeline
+		  			var container = document.getElementById('visualization');
+		  			var options = {
+								editable: true,
+								//clickToUse: true,
+								orientation: {axis:'both'}
+
+		  				};
+						 	//console.log("--------------------------------------");
+							//console.log(results_grp);
+							//console.log("--------------------------------------");
+
+						items.clear();
+						items.add(results.data);
+						groups.clear();
+						groups.add(results_grp.data);
+						var timeline = new vis.Timeline(container, items, groups, options);
+						timeline.fit();
+
+						var axisOrientation = document.getElementById('axis-orientation');
+					  axisOrientation.onchange = function () {
+					    timeline.setOptions({ orientation: {axis: this.value} });
+					  };
+
+					  var itemOrientation = document.getElementById('item-orientation');
+					  itemOrientation.onchange = function () {
+					    timeline.setOptions({ orientation: {item: this.value} });
+						};
+
+						var timeaxisscale = document.getElementById('timeaxis-scale');
+						timeaxisscale.onchange = function () {
+					    timeline.setOptions({ timeAxis: {scale: this.value} });
+						};
+					});
+				});
+				</script>
+			<!-- </div> -->
+
+		</div>
+		<footer>
+			<div class="footer-main">
+				<center>
+				<img src="./img//DumatiLogo50x50.png">
+				<br>
+				Gantt Chart Creator by <a href="https://mgw.dumatics.com">Ankit Mittal</a>
+			</center>
+				<br>
+			</div>
+		</footer>
+	</body>
+</html>
