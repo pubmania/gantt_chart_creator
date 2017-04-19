@@ -60,12 +60,12 @@ TASKS: <textarea id="input" placeholder="Input">id,content,group,start,end,type,
 1,Task 1,groupid1,2016-12-02,2017-03-17,point,redpoint
 2,Task 2,groupid1,2016-12-02,,box,green
 3,Task 3,groupid1,2016-12-02,2017-03-17,range,blue
-4,Task 4,groupid2,2016-12-02,2017-02-17,background,
-5,Task 5,groupid2,2017-03-17,2017-04-07,range,orange
+4,<br><br><br><br><br><br><br>Background spanning <br>across all groups,,2016-12-02,2017-02-17,background,
+5,Group Specific background,groupid2,2017-03-17,2017-05-07,background,
 6,Task 6,groupid3,2017-03-17,2017-04-27,range,red
 7,Task 7,groupid3,2017-04-07,2017-04-27,box,orange
 8,Task 8,groupid3,2017-05-07,2017-05-17,box,green
-9,Task 9,groupid4,2017-06-07,2017-06-20,range,blue
+9,Overflow for Task 9,groupid4,2017-06-07,2017-06-20,range,blueoverflow
 10,Task 10,groupid4,2017-07-07,2017-07-31,point,orange</textarea>
 </div>
 <div class="grid-35 text-center">
@@ -108,8 +108,8 @@ groupid4, Section 3, font-weight:bold</textarea>
 				<div class="grid-30 text-center">
 					Axis Scale:
 					<select id="timeaxis-scale">
-						<option value="year" selected>Year</option>
-						<option value="month">Month</option>
+						<option value="year">Year</option>
+						<option value="month" selected>Month</option>
 						<option value="day">Day</option>
 						<option value="weekday">Weekday</option>
 						<option value="hour">Hour</option>
@@ -134,6 +134,12 @@ groupid4, Section 3, font-weight:bold</textarea>
   border-color: darkred;
 }
 
+.vis-item.blueoverflow .vis-item-overflow {
+  color: darkgrey;
+  background-color: blue;
+  border-color: darkblue;
+  overflow: visible;
+}
 .vis-item.red {
   color: white;
   background-color: red;
@@ -168,7 +174,7 @@ groupid4, Section 3, font-weight:bold</textarea>
 				<br>
 
 				<script>
-				//var btnLoad = document.getElementById('load');
+
 				$(function()
 				{
 					$('#submit-parse').click(function()
@@ -177,18 +183,18 @@ groupid4, Section 3, font-weight:bold</textarea>
 						var txt = $('#input').val();
 						var txt_grp = $('#groupinput').val();
 
-						/**
-						including style
-						**/
+						/** START: Codeblock for including Custom CSS **/
 						var style = document.createElement('style')
 						style.type = 'text/css'
 						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
 						style.innerHTML = $('#custom_css').val();
 						document.getElementsByTagName('head')[0].appendChild(style)
+						/** END: Codeblock for including Custom CSS **/
 
 						var results = Papa.parse(txt, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
 						var results_grp = Papa.parse(txt_grp, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
 		  			var items = new vis.DataSet();
+						//var items1 = new vis.DataSet();
 						var groups = new vis.DataSet();
 		  				// create a timeline
 		  			var container = document.getElementById('visualization');
@@ -198,12 +204,41 @@ groupid4, Section 3, font-weight:bold</textarea>
 								orientation: {axis:'both'}
 
 		  				};
-						 	//console.log("--------------------------------------");
-							//console.log(results_grp);
-							//console.log("--------------------------------------");
+						 	/*console.log("----------------RESULT--------------");
+							console.log(results.data);
+							console.log("--------------------------------------");*/
+/* START: fix for removing null or empty value from csv data in json*/
+/*
+This code block fixes null value for json to ensures that csv data in "" does not
+get included in the resulting serialisation.
 
-						items.clear();
-						items.add(results.data);
+This is particularly important when group for a background item is empty and expectation
+is that the task as bacground will span across all groups.
+
+Basically this code block ensures that following csv:
+						id,content,group,start,end,type,className
+						2,Task 2,,2016-12-02,,box,green
+results in following dataset:
+[{"id":"2"},{"content":"Task2"},{"start":"2016-12-02"},{"type":"box"},{"className":"green"}]
+*/
+							var jsonObj = results.data;
+							items.clear();
+							$.each(jsonObj, function(key, value){
+								var jsonobjchild = value;
+								$.each(jsonobjchild, function(key,value){
+									if (value === "" || value === null){
+									console.log(jsonobjchild[key]);
+									delete jsonobjchild[key];
+								}
+								});
+								items.add(jsonobjchild);
+								});
+/* END: fix for removing null or empty value from csv data in json*/
+						/*console.log("------------ITEMS1------------------");
+						console.log(items1);
+						console.log("--------------------------------------");*/
+		//			items.clear();
+		//			items.add(results.data);
 						groups.clear();
 						groups.add(results_grp.data);
 						var timeline = new vis.Timeline(container, items, groups, options);
