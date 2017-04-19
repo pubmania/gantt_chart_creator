@@ -1,6 +1,7 @@
-# gantt_chart_creator
-An html based Gantt chart creator using the timeline vis javascript library and papaparse javascript library.
+# Gantt Chart Creator
+An html based Gantt chart creator using the [timeline vis javascript library](http://visjs.org/docs/timeline/) and [papaparse javascript library](http://papaparse.com/).
 
 # To Do
 * Create different configuration items on the front end to modify the various aspects of timeline.,
-* read a saved csv to create the gantt.
+* Read a saved csv to create the Gantt.
+* Add color-picker for different Custom CSS elements to make it customisable using the GUI.
