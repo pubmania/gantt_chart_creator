@@ -118,14 +118,18 @@ groupid4, Section 3, font-weight:bold</textarea>
 						<option value="millisecond">Millisecond</option>
 					</select>
 				</div>
-
 				<br>
 				<br><br>
 				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
 
-				<div id="visualization">
-
+				<div id="visualizationcontainer">
+					<div id="zoom" class="text-center">
+						<br><br
+					</div>
+					<div id="visualization">
+					</div>
 				</div>
+
 				<br>
 
 				<div>
@@ -170,10 +174,6 @@ groupid4, Section 3, font-weight:bold</textarea>
 				<br>
 				<br><br>
 				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
-
-				<div id="visualization">
-
-				</div>
 				<br>
 
 				<script>
@@ -199,7 +199,36 @@ groupid4, Section 3, font-weight:bold</textarea>
 		  			var items = new vis.DataSet();
 						//var items1 = new vis.DataSet();
 						var groups = new vis.DataSet();
-		  				// create a timeline
+/*Start: Add Zoom button*/
+						// 1. Create the button
+						var zoomin = document.createElement("button");
+						zoomin.innerHTML = "+";
+
+						// 2. Append to Gantt
+						var body = document.getElementById('zoom');
+						body.appendChild(zoomin);
+
+						// 3. Add event handler
+						zoomin.addEventListener ("click", function() {
+						  //alert("Zoom In");
+							timeline.zoomIn( 0.2);
+						});
+
+						// 1. Create the button
+						var zoomout = document.createElement("button");
+						zoomout.innerHTML = "-";
+
+						// 2. Append to Gantt
+						var body = document.getElementById('zoom');
+						body.appendChild(zoomout);
+
+						// 3. Add event handler
+						zoomout.addEventListener ("click", function() {
+						  //alert("Zoom Out");
+							timeline.zoomOut( 0.2);
+						});
+/*End: Add Zoom button*/
+							// create a timeline
 		  			var container = document.getElementById('visualization');
 		  			var options = {
 								editable: true,
