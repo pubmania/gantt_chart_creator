@@ -16,7 +16,6 @@
 	<body>
 		<br>
 		<h1>Gantt Chart Creator</h1>
-
 		<div class="grid-container">
 
 					<div class="grid-65 text-center">
@@ -72,51 +71,12 @@
 					}</textarea>
 					</div>
 				<br>
-
-				<br><br>
-
 				<center>
 				<button id="submit-parse" class="green">Create Gantt</button>
 				&nbsp;
 				<button id="submit-clear" onClick="window.location.reload()">Clear</button>
 			  </center>
-
 				<br>
-
-				<div class="grid-35 text-center">
-				  Axis orientation:
-				  <select id="axis-orientation">
-				    <option value="both" selected>both</option>
-				    <option value="bottom">bottom</option>
-				    <option value="none">none</option>
-				    <option value="top">top</option>
-				  </select>
-				</div>
-
-				<div class="grid-35 text-center">
-				  Tasks orientation:
-				  <select id="item-orientation">
-				    <option value="bottom" selected>bottom</option>
-				    <option value="top">top</option>
-				  </select>
-				</div>
-
-				<div class="grid-30 text-center">
-					Axis Scale:
-					<select id="timeaxis-scale">
-						<option value="year">Year</option>
-						<option value="month" selected>Month</option>
-						<option value="day">Day</option>
-						<option value="weekday">Weekday</option>
-						<option value="hour">Hour</option>
-						<option value="minute">Minute</option>
-						<option value="second">Second</option>
-						<option value="millisecond">Millisecond</option>
-					</select>
-				</div>
-
-				<br>
-				<br><br>
 					<div id="visualization" class="text-center"></div>
 				<br>
 				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
@@ -134,6 +94,23 @@
 						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
 						style.innerHTML = $('#custom_css').val();
 						document.getElementsByTagName('head')[0].appendChild(style)
+						var chart_opts = document.createElement('div')
+						chart_opts.type = 'html'
+						chart_opts.innerHTML = '<div class="grid-35 text-center">'+'Axis orientation: <select id="axis-orientation">'+
+						'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
+						'<option value="top">top</option>'+'</select>'+'</div>'+'<div class="grid-35 text-center">'+'Tasks orientation: <select id="item-orientation">'+
+						'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>'+'</div>'+'<div class="grid-30 text-center">'+
+						'Axis Scale: <select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
+						+'<option value="month" selected>Month'+'</option>'
+						+'<option value="day">Day'+'</option>'
+						+'<option value="weekday">Weekday'+'</option>'
+						+'<option value="hour">Hour'+'</option>'
+						+'<option value="minute">Minute'+'</option>'
+						+'<option value="second">Second'+'</option>'
+						+'<option value="millisecond">Millisecond'+'</option>'
+					+'</select>'
+				+'</div>'
+						document.getElementById('visualization').appendChild(chart_opts)
 						/** END: Codeblock for including Custom CSS **/
 
 						//var tab2csv = txt.replace(/	/g, ",");
