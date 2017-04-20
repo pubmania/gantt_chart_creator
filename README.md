@@ -8,7 +8,7 @@ Alternatively,a simple copy paste of excel columns into the textarea will also p
 The current interface does make use of the flexibility offered by vis timeline library to customise the look and feel of Gantt Chart by providing custom css.The sample data and sample custom css will help user to understand what to modify and how.
 
 # Demo
-This code repository is live [HERE](https://pubmania.github.io/gantt_chart_creator/Gantt.html)
+This code repository is live for single input [HERE](https://pubmania.github.io/gantt_chart_creator/Gantt_single_input.html) and separate tasks and groups entries [HERE](https://pubmania.github.io/gantt_chart_creator/Gantt.html)
 
 # To Do
 * Create different configuration items on the front end to modify the various aspects of timeline.,
