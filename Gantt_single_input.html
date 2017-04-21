@@ -107,36 +107,6 @@ border-color: darkorange;
 		  			var items = new vis.DataSet();
 
 						var groups = new vis.DataSet();
-
-						// 1. Create the button
-						var zoomin = document.createElement("button");
-						zoomin.innerHTML = "+";
-
-						// 2. Append to Gantt
-						var body = document.getElementById('visualization');
-						body.appendChild(zoomin);
-
-						// 3. Add event handler
-						zoomin.addEventListener ("click", function() {
-						  //alert("Zoom In");
-							timeline.zoomIn( 0.2);
-						});
-
-						// 1. Create the button
-						var zoomout = document.createElement("button");
-						zoomout.innerHTML = "-";
-
-						// 2. Append to Gantt
-						var body = document.getElementById('visualization');
-						body.appendChild(zoomout);
-
-						// 3. Add event handler
-						zoomout.addEventListener ("click", function() {
-						  //alert("Zoom Out");
-							timeline.zoomOut( 0.2);
-						});
-/*End: Add Zoom button*/
-
 //Add chart options
 var chart_opts = document.createElement('div');
 var body = document.getElementById('visualization');
@@ -197,6 +167,37 @@ axisscale.addEventListener ('change', function() {
 		timeline.setOptions({ timeAxis: {scale: axisscale.value} });
 	}
 });
+
+
+/*Start: Add Zoom button*/
+						// 1. Create the button
+						var zoomin = document.createElement("button");
+						zoomin.innerHTML = "+";
+
+						// 2. Append to Gantt
+						var body = document.getElementById('visualization');
+						body.appendChild(zoomin);
+
+						// 3. Add event handler
+						zoomin.addEventListener ("click", function() {
+						  //alert("Zoom In");
+							timeline.zoomIn( 0.2);
+						});
+
+						// 1. Create the button
+						var zoomout = document.createElement("button");
+						zoomout.innerHTML = "-";
+
+						// 2. Append to Gantt
+						var body = document.getElementById('visualization');
+						body.appendChild(zoomout);
+
+						// 3. Add event handler
+						zoomout.addEventListener ("click", function() {
+						  //alert("Zoom Out");
+							timeline.zoomOut( 0.2);
+						});
+/*End: Add Zoom button*/
 
 							// create a timeline
 		  			var container = document.getElementById('visualization');
