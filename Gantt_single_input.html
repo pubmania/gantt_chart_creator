@@ -81,7 +81,6 @@ border-color: darkorange;
 				<br>
 					<div id="visualizationcontainer" class="text-center"></div>
 				<br>
-				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
 				<script>
 
 				$(function()
@@ -97,25 +96,7 @@ border-color: darkorange;
 						style.type = 'text/css'
 						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
 						style.innerHTML = $('#custom_css').val();
-						document.getElementsByTagName('head')[0].appendChild(style)
-						/*var chart_opts = document.createElement('div')
-						chart_opts.type = 'html'
-						chart_opts.innerHTML = '<div class="grid-35 text-center">'+'Axis orientation: <select id="axis-orientation">'+
-						'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
-						'<option value="top">top</option>'+'</select>'+'</div>'+'<div class="grid-35 text-center">'+'Tasks orientation: <select id="item-orientation">'+
-						'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>'+'</div>'+
-						'<div class="grid-30 text-center">'+
-						'Axis Scale: <select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
-						+'<option value="month" selected>Month'+'</option>'
-						+'<option value="day">Day'+'</option>'
-						+'<option value="weekday">Weekday'+'</option>'
-						+'<option value="hour">Hour'+'</option>'
-						+'<option value="minute">Minute'+'</option>'
-						+'<option value="second">Second'+'</option>'
-						+'<option value="millisecond">Millisecond'+'</option>'
-					+'</select>'
-				+'</div>'
-						document.getElementById('visualization').appendChild(chart_opts)*/
+						document.getElementsByTagName('head')[0].appendChild(style);
 						/** END: Codeblock for including Custom CSS **/
 
 						//var tab2csv = txt.replace(/	/g, ",");
@@ -184,6 +165,7 @@ var axisscale = document.createElement('select');
 axisscale.innerHTML = '<select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
 +'<option value="month" selected>Month'+'</option>'
 +'<option value="day">Day'+'</option>'
++'<option value="week">Week'+'</option>'
 +'<option value="weekday">Weekday'+'</option>'
 +'<option value="hour">Hour'+'</option>'
 +'<option value="minute">Minute'+'</option>'
@@ -192,7 +174,6 @@ axisscale.innerHTML = '<select id="timeaxis-scale">'+'<option value="year">Year'
 +'</select>';
 
 // 2. Append to Gantt
-//var body = document.getElementById('axis_orientation');
 document.getElementById('visualization').appendChild(axisorientationlabel);
 axisorientationlabel.appendChild(axisorientation);
 document.getElementById('visualization').appendChild(itemorientationlabel);
@@ -202,19 +183,19 @@ axisscalelabel.appendChild(axisscale);
 
 // 3. Add event handler
 axisorientation.addEventListener ('change', function() {
-	//var axis_opts = document.getElementById('axis-orientation');
-	//alert(axisorientation.value);
 	timeline.setOptions({ orientation: {axis: axisorientation.value} });
 });
 
 itemorientation.addEventListener ('change', function() {
-	//var item_opts = document.getElementById('item-orientation');
 	timeline.setOptions({ orientation: {axis: itemorientation.value} });
 });
 
 axisscale.addEventListener ('change', function() {
-	//var axis_scale_opts = document.getElementById('timeaxis-scale');
-	timeline.setOptions({ timeAxis: {scale: axisscale.value} });
+	if (axisscale.value == "week") {
+		timeline.setOptions({ timeAxis: {scale: 'day', step: 7} });
+	} else {
+		timeline.setOptions({ timeAxis: {scale: axisscale.value} });
+	}
 });
 
 							// create a timeline
@@ -283,7 +264,7 @@ results in following dataset:
 						//console.log("in else loop")
 						}
 						timeline.fit();
-						
+
 					});
 				});
 				</script>
