@@ -43,6 +43,7 @@ background-color: blue;
 border-color: darkblue;
 overflow: visible;
 }
+
 .vis-item.red {
 color: white;
 background-color: red;
@@ -66,6 +67,7 @@ color: white;
 background-color: orange;
 border-color: darkorange;
 }
+
 .vis-item.orangepoint {
 border-color: darkorange;
 }</textarea>
@@ -77,7 +79,7 @@ border-color: darkorange;
 				<button id="submit-clear" onClick="window.location.reload()">Clear</button>
 			  </center>
 				<br>
-					<div id="visualization" class="text-center"></div>
+					<div id="visualizationcontainer" class="text-center"></div>
 				<br>
 				<!-- i>Open the Console in your browser's inspector tools to see results.</i-->
 				<script>
@@ -87,19 +89,22 @@ border-color: darkorange;
 					$('#submit-parse').click(function()
 					{
 						var txt = $('#input').val();
-
+						var visualisation = document.createElement('div');
+						visualisation.innerHTML = '<div id="visualization">'+'<div>';
+						document.getElementById('visualizationcontainer').appendChild(visualisation);
 						/** START: Codeblock for including Custom CSS **/
 						var style = document.createElement('style')
 						style.type = 'text/css'
 						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
 						style.innerHTML = $('#custom_css').val();
 						document.getElementsByTagName('head')[0].appendChild(style)
-						var chart_opts = document.createElement('div')
+						/*var chart_opts = document.createElement('div')
 						chart_opts.type = 'html'
 						chart_opts.innerHTML = '<div class="grid-35 text-center">'+'Axis orientation: <select id="axis-orientation">'+
 						'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
 						'<option value="top">top</option>'+'</select>'+'</div>'+'<div class="grid-35 text-center">'+'Tasks orientation: <select id="item-orientation">'+
-						'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>'+'</div>'+'<div class="grid-30 text-center">'+
+						'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>'+'</div>'+
+						'<div class="grid-30 text-center">'+
 						'Axis Scale: <select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
 						+'<option value="month" selected>Month'+'</option>'
 						+'<option value="day">Day'+'</option>'
@@ -110,7 +115,7 @@ border-color: darkorange;
 						+'<option value="millisecond">Millisecond'+'</option>'
 					+'</select>'
 				+'</div>'
-						document.getElementById('visualization').appendChild(chart_opts)
+						document.getElementById('visualization').appendChild(chart_opts)*/
 						/** END: Codeblock for including Custom CSS **/
 
 						//var tab2csv = txt.replace(/	/g, ",");
@@ -151,13 +156,73 @@ border-color: darkorange;
 						});
 /*End: Add Zoom button*/
 
+//Add chart options
+var chart_opts = document.createElement('div');
+var body = document.getElementById('visualization');
+body.appendChild(chart_opts);
+
+// 1. Create the option
+var axisorientationlabel = document.createElement('div');
+axisorientationlabel.className = 'grid-35 text-center';
+axisorientationlabel.innerHTML = '<b>'+'Axis Orientation: '+'</b>';
+var axisorientation = document.createElement('select');
+axisorientation.innerHTML = '<select id="axis-orientation">'+
+'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
+'<option value="top">top</option>'+'</select>';
+
+var itemorientationlabel = document.createElement('div');
+itemorientationlabel.className = 'grid-35 text-center';
+itemorientationlabel.innerHTML = '<b>'+'Item Orientation: '+'</b>';
+var itemorientation = document.createElement('select');
+itemorientation.innerHTML = '<select id="item-orientation">'+
+'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>';
+
+var axisscalelabel = document.createElement('div');
+axisscalelabel.className = 'grid-30 text-center';
+axisscalelabel.innerHTML = '<b>'+'Axis Scale: '+'</b>'
+var axisscale = document.createElement('select');
+axisscale.innerHTML = '<select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
++'<option value="month" selected>Month'+'</option>'
++'<option value="day">Day'+'</option>'
++'<option value="weekday">Weekday'+'</option>'
++'<option value="hour">Hour'+'</option>'
++'<option value="minute">Minute'+'</option>'
++'<option value="second">Second'+'</option>'
++'<option value="millisecond">Millisecond'+'</option>'
++'</select>';
+
+// 2. Append to Gantt
+//var body = document.getElementById('axis_orientation');
+document.getElementById('visualization').appendChild(axisorientationlabel);
+axisorientationlabel.appendChild(axisorientation);
+document.getElementById('visualization').appendChild(itemorientationlabel);
+itemorientationlabel.appendChild(itemorientation);
+document.getElementById('visualization').appendChild(axisscalelabel);
+axisscalelabel.appendChild(axisscale);
+
+// 3. Add event handler
+axisorientation.addEventListener ('change', function() {
+	//var axis_opts = document.getElementById('axis-orientation');
+	//alert(axisorientation.value);
+	timeline.setOptions({ orientation: {axis: axisorientation.value} });
+});
+
+itemorientation.addEventListener ('change', function() {
+	//var item_opts = document.getElementById('item-orientation');
+	timeline.setOptions({ orientation: {axis: itemorientation.value} });
+});
+
+axisscale.addEventListener ('change', function() {
+	//var axis_scale_opts = document.getElementById('timeaxis-scale');
+	timeline.setOptions({ timeAxis: {scale: axisscale.value} });
+});
+
 							// create a timeline
 		  			var container = document.getElementById('visualization');
 		  			var options = {
 								editable: true,
 								//clickToUse: true,
 								orientation: {axis:'both'}
-
 		  				};
 						 	/*console.log("----------------RESULT--------------");
 							console.log(results.data);
@@ -218,21 +283,7 @@ results in following dataset:
 						//console.log("in else loop")
 						}
 						timeline.fit();
-
-						var axisOrientation = document.getElementById('axis-orientation');
-					  axisOrientation.onchange = function () {
-					    timeline.setOptions({ orientation: {axis: this.value} });
-					  };
-
-					  var itemOrientation = document.getElementById('item-orientation');
-					  itemOrientation.onchange = function () {
-					    timeline.setOptions({ orientation: {item: this.value} });
-						};
-
-						var timeaxisscale = document.getElementById('timeaxis-scale');
-						timeaxisscale.onchange = function () {
-					    timeline.setOptions({ timeAxis: {scale: this.value} });
-						};
+						
 					});
 				});
 				</script>
