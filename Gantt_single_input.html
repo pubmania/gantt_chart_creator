@@ -4,7 +4,7 @@
 		<title>Gantt Chart Creator - Single Input</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="./css/font-awesome.min.css">
-		<link rel="stylesheet" href="./css/css">
+		<link rel="stylesheet" href="./css/style.css">
 		<link rel="stylesheet" href="./css/unsemantic.css">
 		<link rel="stylesheet" href="./css/common.css">
 		<link rel="stylesheet" href="./css/demo.css">
@@ -12,6 +12,7 @@
 		<script src="./js/jquery.min.js"></script>
 		<script src="./js/papaparse.js"></script>
 		<script src="./js/vis.js"></script>
+		<script src="./js/html2canvas.js"></script>
 	</head>
 	<body>
 		<br>
@@ -77,19 +78,29 @@ border-color: darkorange;
 				<button id="submit-parse" class="green">Create Gantt</button>
 				&nbsp;
 				<button id="submit-clear" onClick="window.location.reload()">Clear</button>
+				&nbsp;
+				<button id="btnSave" class="green">Take Screenshot</button>
 			  </center>
 				<br>
+
+				<span id="widget">
 					<div id="visualizationcontainer" class="text-center"></div>
+					<div id="visualizationcontainer_img" class="text-center"></div>
+				</span>
+
+				</br>
 				<br>
+				</br>
 				<script>
 
 				$(function()
 				{
 					$('#submit-parse').click(function()
 					{
+						document.getElementById("visualizationcontainer").innerHTML = "";
 						var txt = $('#input').val();
 						var visualisation = document.createElement('div');
-						visualisation.innerHTML = '<div id="visualization">'+'<div>';
+						visualisation.innerHTML = '<div id="visualization">'+'</div>';
 						document.getElementById('visualizationcontainer').appendChild(visualisation);
 						/** START: Codeblock for including Custom CSS **/
 						var style = document.createElement('style')
@@ -201,6 +212,7 @@ axisscale.addEventListener ('change', function() {
 
 							// create a timeline
 		  			var container = document.getElementById('visualization');
+
 		  			var options = {
 								editable: true,
 								//clickToUse: true,
@@ -268,6 +280,14 @@ results in following dataset:
 
 					});
 				});
+
+				$("#btnSave").click(function() {
+					html2canvas(document.getElementById('visualization')).then(function(canvas) {
+					//html2canvas(document.getElementById('corevis')).then(function(canvas) {
+    				document.getElementById('visualizationcontainer_img').appendChild(canvas);
+					});
+				});
+
 				</script>
 			<!-- </div> -->
 		</div>

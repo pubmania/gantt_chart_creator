@@ -4,7 +4,7 @@
 		<title>Gantt Chart Creator</title>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="./css/font-awesome.min.css">
-		<link rel="stylesheet" href="./css/css">
+		<link rel="stylesheet" href="./css/style.css">
 		<link rel="stylesheet" href="./css/unsemantic.css">
 		<link rel="stylesheet" href="./css/common.css">
 		<link rel="stylesheet" href="./css/demo.css">
@@ -87,8 +87,8 @@ groupid4, Section 3, font-weight:bold</textarea>
 				<button id="submit-clear" onClick="window.location.reload()">Clear</button>
 			  </center>
 				<br>
-				
-				
+
+
 				<div id="visualization">
 				</div>
 				<div>
@@ -151,7 +151,7 @@ groupid4, Section 3, font-weight:bold</textarea>
 						//style.innerHTML = '.vis-item.vis-dot {border-color: #F991A3; background-color: pink;font-size: 15pt;color: purple;box-shadow: 5px 5px 20px rgba(128,128,128, 0.5);}'
 						style.innerHTML = $('#custom_css').val();
 						document.getElementsByTagName('head')[0].appendChild(style)
-						
+
 						var chart_opts = document.createElement('div')
 						chart_opts.type = 'html'
 						chart_opts.innerHTML = '<div class="grid-35 text-center">'+'Axis orientation: <select id="axis-orientation">'+
@@ -170,7 +170,7 @@ groupid4, Section 3, font-weight:bold</textarea>
 						+'</div>'
 						document.getElementById('visualization').appendChild(chart_opts)
 						/** END: Codeblock for including Custom CSS **/
-						
+
 						var results = Papa.parse(txt, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
 						var results_grp = Papa.parse(txt_grp, {header: "TRUE",skipEmptyLines:"TRUE", Delimiter:"auto"});
 		  			var items = new vis.DataSet();
