@@ -157,66 +157,66 @@ border-color: darkorange;
 		  			var items = new vis.DataSet();
 
 						var groups = new vis.DataSet();
-//Add chart options
-var chart_opts = document.createElement('div');
-var body = document.getElementById('visualization');
-body.appendChild(chart_opts);
+						//Add chart options
+						var chart_opts = document.createElement('div');
+						var body = document.getElementById('visualization');
+						body.appendChild(chart_opts);
 
-// 1. Create the option
-var axisorientationlabel = document.createElement('div');
-axisorientationlabel.className = 'grid-35 text-center';
-axisorientationlabel.innerHTML = '<b>'+'Axis Orientation: '+'</b>';
-var axisorientation = document.createElement('select');
-axisorientation.innerHTML = '<select id="axis-orientation">'+
-'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
-'<option value="top">top</option>'+'</select>';
+						// 1. Create the option
+						var axisorientationlabel = document.createElement('div');
+						axisorientationlabel.className = 'grid-35 text-center';
+						axisorientationlabel.innerHTML = '<b>'+'Axis Orientation: '+'</b>';
+						var axisorientation = document.createElement('select');
+						axisorientation.innerHTML = '<select id="axis-orientation">'+
+						'<option value="both" selected>both</option>'+'<option value="bottom">bottom</option>'+'<option value="none">none</option>'+
+						'<option value="top">top</option>'+'</select>';
 
-var itemorientationlabel = document.createElement('div');
-itemorientationlabel.className = 'grid-35 text-center';
-itemorientationlabel.innerHTML = '<b>'+'Item Orientation: '+'</b>';
-var itemorientation = document.createElement('select');
-itemorientation.innerHTML = '<select id="item-orientation">'+
-'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>';
+						var itemorientationlabel = document.createElement('div');
+						itemorientationlabel.className = 'grid-35 text-center';
+						itemorientationlabel.innerHTML = '<b>'+'Item Orientation: '+'</b>';
+						var itemorientation = document.createElement('select');
+						itemorientation.innerHTML = '<select id="item-orientation">'+
+						'<option value="bottom" selected>bottom</option>'+'<option value="top">top</option>'+'</select>';
 
-var axisscalelabel = document.createElement('div');
-axisscalelabel.className = 'grid-30 text-center';
-axisscalelabel.innerHTML = '<b>'+'Axis Scale: '+'</b>'
-var axisscale = document.createElement('select');
-axisscale.innerHTML = '<select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
-+'<option value="month" selected>Month'+'</option>'
-+'<option value="day">Day'+'</option>'
-+'<option value="week">Week'+'</option>'
-+'<option value="weekday">Weekday'+'</option>'
-+'<option value="hour">Hour'+'</option>'
-+'<option value="minute">Minute'+'</option>'
-+'<option value="second">Second'+'</option>'
-+'<option value="millisecond">Millisecond'+'</option>'
-+'</select>';
+						var axisscalelabel = document.createElement('div');
+						axisscalelabel.className = 'grid-30 text-center';
+						axisscalelabel.innerHTML = '<b>'+'Axis Scale: '+'</b>'
+						var axisscale = document.createElement('select');
+						axisscale.innerHTML = '<select id="timeaxis-scale">'+'<option value="year">Year'+'</option>'
+						+'<option value="month" selected>Month'+'</option>'
+						+'<option value="day">Day'+'</option>'
+						+'<option value="week">Week'+'</option>'
+						+'<option value="weekday">Weekday'+'</option>'
+						+'<option value="hour">Hour'+'</option>'
+						+'<option value="minute">Minute'+'</option>'
+						+'<option value="second">Second'+'</option>'
+						+'<option value="millisecond">Millisecond'+'</option>'
+						+'</select>';
 
-// 2. Append to Gantt
-document.getElementById('visualization').appendChild(axisorientationlabel);
-axisorientationlabel.appendChild(axisorientation);
-document.getElementById('visualization').appendChild(itemorientationlabel);
-itemorientationlabel.appendChild(itemorientation);
-document.getElementById('visualization').appendChild(axisscalelabel);
-axisscalelabel.appendChild(axisscale);
+						// 2. Append to Gantt
+						document.getElementById('visualization').appendChild(axisorientationlabel);
+						axisorientationlabel.appendChild(axisorientation);
+						document.getElementById('visualization').appendChild(itemorientationlabel);
+						itemorientationlabel.appendChild(itemorientation);
+						document.getElementById('visualization').appendChild(axisscalelabel);
+						axisscalelabel.appendChild(axisscale);
 
-// 3. Add event handler
-axisorientation.addEventListener ('change', function() {
-	timeline.setOptions({ orientation: {axis: axisorientation.value} });
-});
+						// 3. Add event handler
+						axisorientation.addEventListener ('change', function() {
+							timeline.setOptions({ orientation: {axis: axisorientation.value} });
+						});
 
-itemorientation.addEventListener ('change', function() {
-	timeline.setOptions({ orientation: {axis: itemorientation.value} });
-});
+						itemorientation.addEventListener ('change', function() {
+							timeline.setOptions({ orientation: {axis: itemorientation.value} });
+						});
 
-axisscale.addEventListener ('change', function() {
-	if (axisscale.value == "week") {
-		timeline.setOptions({ timeAxis: {scale: 'day', step: 7} });
-	} else {
-		timeline.setOptions({ timeAxis: {scale: axisscale.value} });
-	}
-});
+						axisscale.addEventListener ('change', function() {
+							if (axisscale.value == "week") {
+								timeline.setOptions({ timeAxis: {scale: 'day', step: 7} });
+							} else {
+								timeline.setOptions({ timeAxis: {scale: axisscale.value} });
+							}
+						});
 
 
 /*Start: Add Zoom button*/
