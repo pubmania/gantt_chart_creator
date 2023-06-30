@@ -1,3 +1,6 @@
+> __Note__
+> While this was useful when I created it, there were limitations to creating gantt this way. It is still useful for creating quick gantt but for anything more detailed I have been using the Jupyter Notebook based gantt which works better and looks great. That is the one I now use more frequently and notebook itself can be found here: https://github.com/pubmania/python_based_gantt_chart_notebook
+
 # Gantt Chart Creator
 An html based Gantt chart creator using the [timeline vis javascript library](http://visjs.org/docs/timeline/) and [papaparse javascript library](http://papaparse.com/).
 
